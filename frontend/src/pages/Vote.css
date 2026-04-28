@@ -1,0 +1,95 @@
+.vote-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.vote-container h2 {
+  text-align: center;
+  color: var(--primary);
+}
+
+.candidates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.candidate-card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: var(--transition);
+  border: 2px solid transparent;
+  position: relative;
+}
+
+.candidate-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.candidate-card.selected {
+  border-color: var(--primary);
+  background-color: rgba(74, 144, 226, 0.02);
+}
+
+.candidate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-right: 30px;
+}
+
+.party-badge {
+  background: rgba(74, 144, 226, 0.1);
+  color: var(--primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.candidate-desc {
+  color: var(--text-light);
+  padding-right: 30px;
+}
+
+.radio-btn {
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.candidate-card.selected .radio-btn {
+  border-color: var(--primary);
+}
+
+.radio-inner {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: var(--transition);
+}
+
+.radio-inner.active {
+  background-color: var(--primary);
+}
+
+.vote-btn {
+  width: 100%;
+  font-size: 1.1rem;
+  padding: 1rem;
+}
