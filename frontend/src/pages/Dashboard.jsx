@@ -2,12 +2,15 @@ import { Link } from 'react-router-dom';
 import { Vote, BarChart2, MessageSquare } from 'lucide-react';
 import './Dashboard.css';
 
-export default function Dashboard({ username }) {
+export default function Dashboard({ username, hasVoted }) {
   return (
     <div className="dashboard-container animate-fade-in">
       <header className="dashboard-header">
         <h1>Welcome to the Voting Portal, {username}!</h1>
         <p>Your voice matters. Participate in the democratic process securely and easily.</p>
+        <div style={{ marginTop: '1rem', padding: '0.5rem 1rem', display: 'inline-block', borderRadius: '4px', backgroundColor: hasVoted ? '#dcfce7' : '#fef9c3', color: hasVoted ? '#166534' : '#854d0e', fontWeight: 'bold' }}>
+          Status: {hasVoted ? 'Voted' : 'Not Voted'}
+        </div>
       </header>
 
       <div className="dashboard-cards">

@@ -5,8 +5,9 @@ import './Vote.css';
 
 const API_URL = 'http://localhost:5000/api';
 
-export default function Vote({ token }) {
+export default function Vote({ token, hasVoted }) {
   const [candidates, setCandidates] = useState([]);
+  const [electionStatus, setElectionStatus] = useState('not_started');
   const [selectedCandidate, setSelectedCandidate] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -14,17 +15,21 @@ export default function Vote({ token }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCandidates = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axios.get(`${API_URL}/candidates`);
-        setCandidates(res.data);
+        const [candidatesRes, statusRes] = await Promise.all([
+          axios.get(`${API_URL}/candidates`),
+          axios.get(`${API_URL}/election-status`)
+        ]);
+        setCandidates(candidatesRes.data);
+        setElectionStatus(statusRes.data.status);
         setLoading(false);
       } catch (err) {
-        setError('Failed to load candidates');
+        setError('Failed to load election data');
         setLoading(false);
       }
     };
-    fetchCandidates();
+    fetchData();
   }, []);
 
   const handleVote = async () => {
@@ -41,13 +46,46 @@ export default function Vote({ token }) {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSuccess('Your vote has been cast successfully!');
-      setTimeout(() => navigate('/results'), 2000);
+      // Update hasVoted locally for immediate feedback if needed
+      localStorage.setItem('hasVoted', 'true');
+      setTimeout(() => {
+        window.location.href = '/dashboard'; // Force reload to update App state
+      }, 2000);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to submit vote');
     }
   };
 
   if (loading) return <div className="loading">Loading candidates...</div>;
+
+  if (hasVoted) {
+    return (
+      <div className="vote-container animate-fade-in">
+        <h2>You have already voted</h2>
+        <p className="subtitle">Thank you for participating! You can only vote once.</p>
+        <button className="btn-primary" onClick={() => navigate('/results')}>View Results</button>
+      </div>
+    );
+  }
+
+  if (electionStatus === 'not_started') {
+    return (
+      <div className="vote-container animate-fade-in">
+        <h2>Voting has not started yet</h2>
+        <p className="subtitle">Please check back later once the admin starts the election.</p>
+      </div>
+    );
+  }
+
+  if (electionStatus === 'ended') {
+    return (
+      <div className="vote-container animate-fade-in">
+        <h2>The election has ended</h2>
+        <p className="subtitle">Voting is now closed. You can view the final results.</p>
+        <button className="btn-primary" onClick={() => navigate('/results')}>View Results</button>
+      </div>
+    );
+  }
 
   return (
     <div className="vote-container animate-fade-in">

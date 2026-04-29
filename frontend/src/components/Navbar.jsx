@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { LogOut, Vote, BarChart2, Home } from 'lucide-react';
 import './Navbar.css';
 
-export default function Navbar({ onLogout, username }) {
+export default function Navbar({ onLogout, username, role }) {
   const location = useLocation();
 
   return (
@@ -13,15 +13,28 @@ export default function Navbar({ onLogout, username }) {
       </div>
       
       <div className="nav-links">
-        <Link to="/dashboard" className={`nav-link ${location.pathname === '/dashboard' ? 'active' : ''}`}>
-          <Home size={18} /> Dashboard
-        </Link>
-        <Link to="/vote" className={`nav-link ${location.pathname === '/vote' ? 'active' : ''}`}>
-          <Vote size={18} /> Cast Vote
-        </Link>
-        <Link to="/results" className={`nav-link ${location.pathname === '/results' ? 'active' : ''}`}>
-          <BarChart2 size={18} /> Results
-        </Link>
+        {role === 'admin' ? (
+          <>
+            <Link to="/admin-dashboard" className={`nav-link ${location.pathname === '/admin-dashboard' ? 'active' : ''}`}>
+              <Home size={18} /> Admin Panel
+            </Link>
+            <Link to="/results" className={`nav-link ${location.pathname === '/results' ? 'active' : ''}`}>
+              <BarChart2 size={18} /> Live Results
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/dashboard" className={`nav-link ${location.pathname === '/dashboard' ? 'active' : ''}`}>
+              <Home size={18} /> Dashboard
+            </Link>
+            <Link to="/vote" className={`nav-link ${location.pathname === '/vote' ? 'active' : ''}`}>
+              <Vote size={18} /> Cast Vote
+            </Link>
+            <Link to="/results" className={`nav-link ${location.pathname === '/results' ? 'active' : ''}`}>
+              <BarChart2 size={18} /> Results
+            </Link>
+          </>
+        )}
       </div>
 
       <div className="nav-user">

@@ -1,79 +1,91 @@
 # AI Voting Assistant
 
-A complete full-stack web application designed for secure voting with an integrated AI Assistant to help voters make informed decisions.
+A full-stack web application designed for secure, role-based voting with an integrated AI assistant. 
+It supports proper role-based access control (RBAC), real-time election status management, and a dedicated admin portal.
 
 ## Features
-- **User Authentication:** Secure registration and login using JWT.
-- **Secure Voting System:** Ensures each user can only vote once.
-- **Real-time Results Dashboard:** View live standings of the election.
-- **AI Voting Assistant:** An integrated chatbot powered by Gemini API to answer questions and provide unbiased voting information.
-- **Modern UI/UX:** Clean, responsive design built with React and custom CSS.
+
+**For Voters:**
+- Secure Registration and Login
+- Profile dashboard showing voting status
+- Single-vote enforcement
+- Real-time AI Assistant to compare candidate platforms
+- Final results view (only after the election is marked ended by admin)
+
+**For Admins:**
+- Dedicated Admin Panel
+- Voter Management (Block, Approve, Delete users)
+- Candidate Management (Add, Edit, Delete candidates)
+- Election Control (Start, End, Reset election status)
+- Live Analytics (Total voters, participation rate, live results)
 
 ## Tech Stack
-- **Frontend:** React, React Router, Vite, Axios, Lucide Icons, plain CSS.
-- **Backend:** Node.js, Express.js.
-- **Database:** MongoDB (Mongoose).
-- **AI Integration:** Google Generative AI (Gemini).
+- **Frontend**: React (Vite), React Router, Axios
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB (Currently using `mongodb-memory-server` for easy testing, but can be easily swapped to a persistent MongoDB cluster)
+- **AI**: Google Generative AI (Gemini)
 
-## Folder Structure
-```
-election-assistant/
-├── backend/
-│   ├── models/ (User.js, Candidate.js inside server.js for simplicity)
-│   ├── server.js
-│   ├── package.json
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/ (Navbar, Chatbot)
-│   │   ├── pages/ (Login, Dashboard, Vote, Results)
-│   │   ├── App.jsx
-│   │   ├── App.css
-│   │   ├── main.jsx
-│   ├── package.json
-│   ├── vite.config.js
-└── README.md
+## Setup Guide
+
+### 1. Clone & Install
+Ensure you have Node.js installed.
+
+Navigate to the `backend` folder and install dependencies:
+```bash
+cd backend
+npm install
 ```
 
-## Setup & Local Development
+Navigate to the `frontend` folder and install dependencies:
+```bash
+cd frontend
+npm install
+```
 
-### 1. Database & Environment Variables
-- Ensure you have MongoDB running locally or a MongoDB Atlas URI.
-- In the `backend` folder, create a `.env` file with the following:
-  ```env
-  PORT=5000
-  MONGO_URI=mongodb://localhost:27017/voting-app
-  JWT_SECRET=your_super_secret_jwt_key
-  GEMINI_API_KEY=your_google_gemini_api_key
-  ```
+### 2. Configuration (Environment Variables)
+In the `backend` directory, create a `.env` file with the following variables:
+```
+PORT=5000
+JWT_SECRET=your_super_secret_key
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+*(Note: If `GEMINI_API_KEY` is not provided, the chatbot will run in a mock mode.)*
 
-### 2. Backend Setup
-1. Open a terminal and navigate to `backend`: `cd backend`
-2. Install dependencies: `npm install`
-3. Start the server: `node server.js`
-4. *Optional:* Seed the database with initial candidates by making a POST request to `http://localhost:5000/api/admin/seed`.
+### 3. Running Locally
+Start the backend server:
+```bash
+cd backend
+npm run dev # or node server.js
+```
 
-### 3. Frontend Setup
-1. Open a new terminal and navigate to `frontend`: `cd frontend`
-2. Install dependencies: `npm install`
-3. Start the dev server: `npm run dev`
+Start the frontend server:
+```bash
+cd frontend
+npm run dev
+```
 
-## Deployment to GitHub Pages & Render
+The application will be accessible at `http://localhost:5173`.
+An initial admin account is automatically seeded for you:
+- **Username**: `admin`
+- **Password**: `admin123`
 
-Since this project requires both a frontend and a backend, the recommended deployment strategy is:
+## Deployment
 
-### Backend Deployment (Render / Heroku)
-1. Push this repository to GitHub.
-2. Go to [Render](https://render.com/) and create a new "Web Service".
-3. Connect your GitHub repository and select the `backend` folder as the Root Directory.
-4. Set the build command to `npm install` and the start command to `node server.js`.
-5. Add your Environment Variables (`MONGO_URI`, `JWT_SECRET`, `GEMINI_API_KEY`) in the Render dashboard.
+The project is structured within a single Git repository for ease of deployment.
 
-### Frontend Deployment (Vercel / Netlify / GitHub Pages)
-1. Before deploying, update the `API_URL` in your frontend components (`Login.jsx`, `Vote.jsx`, `Results.jsx`, `Chatbot.jsx`) from `http://localhost:5000/api` to your newly deployed Render backend URL.
-2. Go to [Vercel](https://vercel.com/) or [Netlify](https://netlify.com/) and create a new project.
-3. Select your GitHub repository and set the Root Directory to `frontend`.
-4. The build command will automatically be detected as `npm run build` and output directory as `dist`.
-5. Click deploy!
+### Deploying the Backend (Render or Heroku)
+1. Commit your code to the `main` branch.
+2. Link your repository to a service like **Render**.
+3. Create a new "Web Service" and select the `backend` folder as the Root Directory.
+4. Set the Build Command: `npm install`
+5. Set the Start Command: `node server.js`
+6. Add your Environment Variables (`JWT_SECRET`, `GEMINI_API_KEY`). *IMPORTANT: Change from `mongodb-memory-server` to a real MongoDB URI for production!*
 
-*(For GitHub Pages specifically, you would use the `gh-pages` npm package and add a `"homepage": "https://yourusername.github.io/repo-name"` to your `frontend/package.json`, then run `npm run build && gh-pages -d dist`)*
+### Deploying the Frontend (Vercel, Netlify, or Firebase)
+1. Link your repository to a service like **Vercel**.
+2. Select the `frontend` folder as the Root Directory.
+3. The build settings should automatically be detected (Build Command: `npm run build`, Output Directory: `dist`).
+4. **Important:** Update `API_URL` in `frontend/src/pages/*.jsx` components to point to your live deployed backend URL instead of `http://localhost:5000/api`.
+
+---
+*Developed for a secure and transparent democratic process.*
