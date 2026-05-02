@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './Vote.css';
 import CandidateCard from '../components/CandidateCard';
 
-const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'production' ? '/api' : 'http://localhost:5000/api');
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'production' ? '/api' : 'http://127.0.0.1:5001/api');
 
 export default function Vote({ token, hasVoted }) {
   const [candidates, setCandidates] = useState([]);

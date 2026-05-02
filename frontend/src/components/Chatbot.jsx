@@ -3,7 +3,7 @@ import axios from 'axios';
 import { MessageSquare, X, Send, Bot, User } from 'lucide-react';
 import './Chatbot.css';
 
-const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'production' ? '/api' : 'http://localhost:5000/api');
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'production' ? '/api' : 'http://127.0.0.1:5001/api');
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
