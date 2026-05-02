@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Vote.css';
+import CandidateCard from '../components/CandidateCard';
 
 const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'production' ? '/api' : 'http://localhost:5000/api');
 
@@ -97,20 +98,12 @@ export default function Vote({ token, hasVoted }) {
 
       <div className="candidates-list">
         {candidates.map((candidate) => (
-          <div 
+          <CandidateCard 
             key={candidate._id} 
-            className={`candidate-card ${selectedCandidate === candidate._id ? 'selected' : ''}`}
-            onClick={() => setSelectedCandidate(candidate._id)}
-          >
-            <div className="candidate-header">
-              <h3>{candidate.name}</h3>
-              <span className="party-badge">{candidate.party}</span>
-            </div>
-            <p className="candidate-desc">{candidate.description}</p>
-            <div className="radio-btn">
-              <div className={`radio-inner ${selectedCandidate === candidate._id ? 'active' : ''}`}></div>
-            </div>
-          </div>
+            candidate={candidate} 
+            isSelected={selectedCandidate === candidate._id} 
+            onSelect={setSelectedCandidate} 
+          />
         ))}
       </div>
 

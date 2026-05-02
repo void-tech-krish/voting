@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Results.css';
+import ResultCard from '../components/ResultCard';
 
 const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'production' ? '/api' : 'http://localhost:5000/api');
 
@@ -53,32 +54,14 @@ export default function Results({ token, role }) {
       <p className="subtitle">Real-time vote count and standings. Total votes cast: <strong>{totalVotes}</strong></p>
 
       <div className="results-list">
-        {candidates.map((candidate, index) => {
-          const percentage = totalVotes === 0 ? 0 : Math.round((candidate.votes / totalVotes) * 100);
-          return (
-            <div key={candidate._id} className="result-card">
-              <div className="result-header">
-                <div className="rank">#{index + 1}</div>
-                <div className="info">
-                  <h3>{candidate.name}</h3>
-                  <span className="party">{candidate.party}</span>
-                </div>
-                <div className="vote-count">
-                  <span className="number">{candidate.votes}</span>
-                  <span className="label">Votes</span>
-                </div>
-              </div>
-              
-              <div className="progress-bar-bg">
-                <div 
-                  className="progress-bar-fill" 
-                  style={{ width: `${percentage}%`, backgroundColor: index === 0 ? '#4CAF50' : '#2196F3' }}
-                ></div>
-              </div>
-              <div className="percentage">{percentage}%</div>
-            </div>
-          );
-        })}
+        {candidates.map((candidate, index) => (
+          <ResultCard 
+            key={candidate._id} 
+            candidate={candidate} 
+            index={index} 
+            totalVotes={totalVotes} 
+          />
+        ))}
       </div>
     </div>
   );
